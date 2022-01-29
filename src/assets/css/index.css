@@ -1,0 +1,84 @@
+@import url('https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+h1 {
+  @apply text-stone-100 px-4 pt-4 pb-1.5 text-3xl font-bold tracking-wide;
+}
+
+h2 {
+  @apply text-stone-100 px-4 pt-4 pb-1.5 text-2xl font-bold tracking-wide;
+}
+
+h3 {
+  @apply text-stone-100 px-4 pt-4 pb-1.5 text-xl font-bold tracking-wide;
+}
+
+h4 {
+  @apply text-stone-100 px-4 pt-4 pb-1.5 text-lg font-bold tracking-wide;
+}
+
+p {
+  @apply tracking-wide font-medium text-stone-300 text-justify;
+}
+
+.title-page {
+  @apply border-b border-orange-400 text-right;
+}
+
+.badge {
+  @apply border border-transparent rounded-full px-1.5 uppercase flex-auto items-center text-xs;
+}
+
+.badge-primary {
+  @apply badge bg-orange-500 text-stone-200;
+}
+
+.badge-active {
+  @apply badge bg-emerald-600 text-stone-200;
+}
+
+.badge-inactive {
+  @apply badge bg-red-600 text-stone-200;
+}
+
+.badge-secondary {
+  @apply badge bg-slate-600 text-stone-200;
+}
+
+.btn {
+  @apply appearance-none cursor-pointer px-4 py-2 rounded-md tracking-tight;
+  @apply font-semibold;
+  @apply transition duration-300 ease-in-out;
+  @apply hover:translate-y-1 hover:scale-105;
+  @apply focus:ring;
+}
+
+.btn-primary {
+  @apply btn bg-orange-600;
+  @apply hover:bg-orange-500;
+  @apply focus:ring-orange-700;
+}
+
+.btn-secondary {
+  @apply btn bg-slate-600;
+  @apply hover:bg-slate-500;
+  @apply focus:ring-slate-700;
+}
+
+.card {
+  @apply border border-stone-800 rounded-lg shadow-lg p-2 bg-stone-700;
+}
+
+.text-primary {
+  @apply text-orange-500;
+}
+
+.input-login {
+  @apply border border-transparent px-4 py-1.5 rounded-lg w-full tracking-wide;
+  @apply ring-offset-0 focus:ring focus:ring-orange-500;
+  @apply transition ease-in-out duration-300;
+}
