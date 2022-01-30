@@ -23,11 +23,12 @@
         <div class="pt-5 border-t border-orange-500">
           <button @click="signIn()" class="btn-primary inline-block w-full">Acessar</button>
           <div class="flex flex-row justify-between text-sm text-stone-100 py-6 px-1">
-            <a href class="text-stone-400 hover:text-orange-500">Ainda não tenho cadastro</a>
-            <a href class="text-stone-400 hover:text-orange-500">Esqueci a senha</a>
+            <a href="/" class="text-stone-400 hover:text-orange-500">Ainda não tenho cadastro</a>
+            <a href="/" class="text-stone-400 hover:text-orange-500">Esqueci a senha</a>
           </div>
         </div>
       </div>
+      <div class="text-white">{{ state }}</div>
     </div>
   </DefaultLayout>
 </template>
@@ -36,11 +37,14 @@
 import {reactive} from 'vue'
 import DefaultLayout from '../components/layouts/DefaultLayout.vue'
 import SignInRequest from '../services/auth/SignIn'
+import useAuthState from '../store/auth/useAuthState';
 
 const form = reactive({
   email : '',
   password : ''
 })
+
+const {state} = useAuthState()
 
 async function signIn(){
   // console.log(form)
