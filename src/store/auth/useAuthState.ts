@@ -1,4 +1,4 @@
-import { computed, reactive, readonly } from 'vue';
+import { computed, reactive, readonly, watch } from 'vue';
 
 type userData = {
   name: string;
@@ -18,6 +18,8 @@ interface State {
   errors: errorsData;
 }
 
+const STATE_NAME = 'SHOP-USER';
+
 const defaultState: State = {
   user: {
     name: '',
@@ -32,10 +34,18 @@ const defaultState: State = {
   },
 };
 
-const state = reactive(defaultState);
+const getDefaultState = () => {
+  if (localStorage.getItem(STATE_NAME) !== null) {
+    return JSON.parse(localStorage.getItem(STATE_NAME));
+  }
+  return defaultState;
+};
+
+const state = reactive(getDefaultState());
 
 const getters = {
   getErrors: () => computed(() => state.errors),
+  isAuthenticated: computed(() => state.isAuthenticated),
 };
 
 const actions = {
@@ -68,8 +78,24 @@ const actions = {
   },
 };
 
-export default () => ({
-  state: readonly(state),
-  ...actions,
-  ...getters,
-});
+watch(
+  () => state,
+  () => {
+    localStorage.setItem(STATE_NAME, JSON.stringify(state));
+  },
+  {
+    deep: true,
+  }
+);
+
+export default () => {
+  if (localStorage.getItem(STATE_NAME) === null) {
+    localStorage.setItem(STATE_NAME, JSON.stringify(state));
+  }
+
+  return {
+    state: readonly(state),
+    ...actions,
+    ...getters,
+  };
+};
