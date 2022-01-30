@@ -1,4 +1,4 @@
-import { reactive, readonly } from 'vue';
+import { computed, reactive, readonly } from 'vue';
 
 type userData = {
   name: string;
@@ -34,7 +34,9 @@ const defaultState: State = {
 
 const state = reactive(defaultState);
 
-const getters = {};
+const getters = {
+  getErrors: () => computed(() => state.errors),
+};
 
 const actions = {
   setUser: (user: userData): void => {
