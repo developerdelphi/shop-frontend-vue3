@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-stone-800 min-h-screen flex flex-col items-stretch">
+  <div class="bg-stone-800 min-h-screen flex flex-col">
     <NavBar />
     <main class="p-2">
       <slot />
