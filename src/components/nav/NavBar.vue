@@ -17,7 +17,7 @@
           </svg>
         </a>
       </div>
-      <div></div>
+      <div>{{ user}}</div>
       <div>
         <span
           @click="toggleMenu = !toggleMenu"
@@ -40,24 +40,37 @@
     </div>
     <div
       v-if="toggleMenu"
-      class="flex flex-row bg-slate-400 h-10 w-3/4 right-0 absolute top-12 p-2 shadow-2xl shadow-slate-400"
+      class="flex flex-row justify-end bg-stone-400 w-3/4 right-0 absolute top-12 p-2 shadow-2xl shadow-slate-400 pr-4 text-lg"
     >
-      <router-link :to="{name: 'signin'}">Login</router-link>
+      <router-link :to="{name: 'signin'}" v-if="!isAuthenticated">Login</router-link>
+      <div v-else class="text-right w-full">
+        <div class="text-stone-500 font-semibold flex flex-col">
+          <span>{{ user.name }}</span>
+          <span class="text-sm">{{ user.email }}</span>
+        </div>
+        <div class="hover:text-stone-800 mt-2 border-b border-stone-500/30 w-full">Sair</div>
+        <div class="menu flex flex-col w-full">
+          <router-link :to="{name: 'home'}">Home</router-link>
+          <router-link :to="{name: 'dashboard'}">Meus pedidos</router-link>
+        </div>
+      </div>
     </div>
   </nav>
 </template>
 
 <script lang="ts">
-import { ref } from "vue";
+import { defineComponent, ref } from "vue";
+import useAuthState from '../../store/auth/useAuthState';
 
-export default {
+export default defineComponent({
   name: 'NavBar',
 
   setup() {
-    const toggleMenu = ref(false)
-    return {toggleMenu}
+    const toggleMenu = ref<boolean>(false)
+
+    const {isAuthenticated, state} = useAuthState()
+
+    return {toggleMenu, isAuthenticated, user: state.user}
   }
-}
-
-
+})
 </script>
