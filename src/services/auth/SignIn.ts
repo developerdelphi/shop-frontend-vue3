@@ -13,18 +13,25 @@ async function SignInRequest(data: SignInDataRequest): Promise<any> {
     await Api.post('api/signin', data).then((response) => {
       const { name, email, created_at } = response.data.user;
       authState.authenticate({ name, email, created_at });
+      return true;
     });
   } catch (error: any) {
     if (error.response.status === 422 || error.response.status === 401) {
+      let email: string[] = [];
+      let password: string[] = [];
+      let message: string = '';
+
       if (error.response.data.errors) {
-        const { email, password, message } = error.response.data.errors;
-        authState.setErrors({ email, password, message });
+        email = error.response.data.errors.email;
+        password = error.response.data.errors.password;
       }
       if (error.response.data.message) {
-        const { message } = error.response.data;
-        authState.setErrors({ email: [], password: [], message });
+        message = error.response.data.message;
+        // authState.setErrors({ email: [], password: [], message });
       }
+      authState.setErrors({ email, password, message });
     }
+    return false;
   }
 }
 
