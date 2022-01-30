@@ -17,7 +17,7 @@
           </svg>
         </a>
       </div>
-      <div>{{ user}}</div>
+      <div></div>
       <div>
         <span
           @click="toggleMenu = !toggleMenu"
@@ -52,6 +52,7 @@
         <div class="menu flex flex-col w-full">
           <router-link :to="{name: 'home'}">Home</router-link>
           <router-link :to="{name: 'dashboard'}">Meus pedidos</router-link>
+          <router-link :to="{name: 'products'}">Produtos</router-link>
         </div>
       </div>
     </div>
