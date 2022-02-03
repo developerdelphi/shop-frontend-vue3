@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts" setup>
-name: 'IconMinus'
 </script>
 
 <style>

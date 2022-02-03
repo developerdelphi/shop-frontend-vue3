@@ -11,7 +11,6 @@
 </template>
 
 <script lang="ts" setup>
-  name: 'IconPlus'
 </script>
 
 <style>
