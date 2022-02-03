@@ -38,6 +38,7 @@ const getDefaultState = () => {
   if (localStorage.getItem(STATE_NAME) !== null) {
     return JSON.parse(localStorage.getItem(STATE_NAME));
   }
+  localStorage.removeItem(STATE_NAME);
   return defaultState;
 };
 
