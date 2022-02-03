@@ -17,7 +17,7 @@
         <span class="badge-secondary">secondary</span>
       </div>
       <br />
-      <div class="card flex flex-row flex-wrap justify-between space-x-2 space-y-3">
+      <div class="card div-exemplo">
         <button class="btn-primary inline-block w-full">Primary</button>
         <button class="btn-secondary">Secondary</button>
         <a href="#" class="btn-primary">Link primary</a>
@@ -29,7 +29,11 @@
 
 <script lang="ts" setup>
 import DefaultLayout from '../components/layouts/DefaultLayout.vue'
+
 </script>
 
-<style>
+<style scope>
+  .div-exemplo {
+    @apply flex flex-row flex-wrap justify-between space-x-2 space-y-3;
+  }
 </style>
