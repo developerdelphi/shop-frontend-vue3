@@ -85,8 +85,8 @@ export default defineComponent({
 <style scoped>
   .add-to-cart {
     @apply absolute right-2 -inset-y-8 w-12 h-12 flex items-center justify-center z-0;
-    @apply border-stone-800  bg-stone-700 rounded-full text-white;
-    @apply hover:bg-gradient-to-r hover:from-stone-700 hover:to-stone-500 hover:-translate-y-1;
+    @apply border-stone-800  bg-stone-500 rounded-full text-white;
+    @apply hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:-translate-y-1;
     @apply transition duration-300 ease-in-out;
   }
   .price {
