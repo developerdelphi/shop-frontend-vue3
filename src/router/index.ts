@@ -1,37 +1,49 @@
-import { createRouter, createWebHistory } from 'vue-router';
+import { createRouter, createWebHistory } from 'vue-router'
+import useAuthState from '../store/auth/useAuthState'
 
 const routes = [
   {
     path: '/',
     name: 'home',
-    component: import('../views/Home.vue'),
+    component: import('../views/Home.vue')
   },
   {
     path: '/signin',
     name: 'signin',
-    component: import('../views/SignIn.vue'),
+    component: import('../views/SignIn.vue')
   },
   {
     path: '/dashboard',
     name: 'dashboard',
     component: import('../views/Dashboard.vue'),
+    meta: { requiresAuth: true }
   },
   {
     path: '/products',
     name: 'products',
-    component: import('../views/Products.vue'),
+    component: import('../views/Products.vue')
   },
 
   {
     path: '/cart',
     name: 'cart',
-    component: import('../views/Cart.vue'),
-  },
-];
+    component: import('../views/Cart.vue')
+  }
+]
 
 const router = createRouter({
   routes,
-  history: createWebHistory(),
-});
+  history: createWebHistory()
+})
 
-export default router;
+const { isAuthenticated } = useAuthState()
+
+router.beforeEach((to, from, next) => {
+  if (to.name === 'signin' && isAuthenticated) return next()
+
+  const requiresAuth = to.meta.requiresAuth
+  if (!!requiresAuth && !isAuthenticated.value) next({ name: 'signin' })
+  else next()
+})
+
+export default router
