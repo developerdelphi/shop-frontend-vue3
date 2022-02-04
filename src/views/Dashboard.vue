@@ -15,11 +15,11 @@ export default defineComponent({
   components: {DefaultLayout},
 
   setup() {
-    const {getUser, user} = useUser()
+    const { getUser, user } = useUser()
 
     getUser()
 
-    return {user}
+    return { user }
   }
 })
 </script>
