@@ -26,20 +26,21 @@
       </div>
     </div>
     <div v-if="toggleMenu" class="menu-toggle">
-      <router-link :to="{ name: 'signin' }" v-if="!isAuthenticated">Login</router-link>
-      <div v-else class="text-right w-full">
-        <div class="text-stone-500 font-semibold flex flex-col">
+      <div class="w-full">
+        <router-link :to="{ name: 'signin' }" v-if="!isAuthenticated">Login</router-link>
+        <div v-else class="text-stone-500 font-semibold flex flex-col">
           <span>{{ user.name }}</span>
           <span class="text-sm">{{ user.email }}</span>
+
+          <div class="menu mt-2 pb-1 border-b border-stone-500/30 w-full">
+            <a href="#" @click.prevent="logout()">Sair</a>
+          </div>
         </div>
-        <div class="menu mt-2 pb-1 border-b border-stone-500/30 w-full">
-          <a href="#">Sair</a>
-        </div>
-        <div class="menu flex flex-col w-full">
-          <router-link :to="{ name: 'home' }">Home</router-link>
-          <router-link :to="{ name: 'dashboard' }">Meus pedidos</router-link>
-          <router-link :to="{ name: 'products' }">Produtos</router-link>
-        </div>
+      </div>
+      <div class="menu flex flex-col w-full">
+        <router-link :to="{ name: 'home' }">Home</router-link>
+        <router-link :to="{ name: 'dashboard' }">Meus pedidos</router-link>
+        <router-link :to="{ name: 'products' }">Produtos</router-link>
       </div>
     </div>
   </nav>
@@ -49,10 +50,12 @@
 import { defineComponent, ref } from "vue";
 import useAuthState from '../../store/auth/useAuthState';
 import useCartState from '../../store/useCartState';
+import useAuth from '../../services/auth/useAuth'
 
 import IconCart from '../icons/IconCart.vue';
 import IconBrand from '../icons/IconBrand.vue';
 import IconMenu from '../icons/IconMenu.vue';
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   name: 'NavBar',
@@ -63,13 +66,23 @@ export default defineComponent({
 
     const { isAuthenticated, state } = useAuthState();
     const { state: cartStore, countItensCart } = useCartState();
+    const {signOut} = useAuth();
+    const router = useRouter()
+
+    async function logout() {
+      await signOut();
+      if(!isAuthenticated.value) {
+        router.push({ name: 'home' })
+      }
+    }
 
     return {
       toggleMenu,
       isAuthenticated,
       user: state.user,
       cartStore,
-      countItensCart
+      countItensCart,
+      logout
     };
   }
 });
