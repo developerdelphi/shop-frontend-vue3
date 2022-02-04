@@ -1,102 +1,102 @@
-import { computed, reactive, readonly, watch } from 'vue';
+import { computed, reactive, readonly, watch } from 'vue'
 
 type userData = {
-  name: string;
-  email: string;
-  created_at: string;
-};
-
-type errorsData = {
-  email?: Array<string>;
-  password?: Array<string>;
-  message?: string;
-};
-
-interface State {
-  user: userData;
-  isAuthenticated: boolean;
-  errors: errorsData;
+  name: string
+  email: string
+  created_at: string
 }
 
-const STATE_NAME = 'SHOP-USER';
+type errorsData = {
+  email?: Array<string>
+  password?: Array<string>
+  message?: string
+}
+
+interface State {
+  user: userData
+  isAuthenticated: boolean
+  errors: errorsData
+}
+
+const STATE_NAME = 'SHOP-USER'
 
 const defaultState: State = {
   user: {
     name: '',
     email: '',
-    created_at: '',
+    created_at: ''
   },
   isAuthenticated: false,
   errors: {
     email: [],
     password: [],
-    message: '',
-  },
-};
+    message: ''
+  }
+}
 
 const getDefaultState = () => {
   if (localStorage.getItem(STATE_NAME) !== null) {
-    return JSON.parse(localStorage.getItem(STATE_NAME));
+    return JSON.parse(localStorage.getItem(STATE_NAME))
   }
-  localStorage.removeItem(STATE_NAME);
-  return defaultState;
-};
+  localStorage.removeItem(STATE_NAME)
+  return defaultState
+}
 
-const state = reactive(getDefaultState());
+const state = reactive(getDefaultState())
 
 const getters = {
   getErrors: () => computed(() => state.errors),
-  isAuthenticated: computed(() => state.isAuthenticated),
-};
+  isAuthenticated: computed(() => state.isAuthenticated)
+}
 
 const actions = {
   setUser: (user: userData): void => {
-    state.user = user;
+    state.user = user
   },
 
   setErrors: ({ email, password, message }: errorsData) => {
-    state.errors.email = email;
-    state.errors.password = password;
-    state.errors.message = message;
+    state.errors.email = email
+    state.errors.password = password
+    state.errors.message = message
   },
 
   setAuthenticated: () => (state.isAuthenticated = !state.isAuthenticated),
 
   authenticate: (user: userData) => {
-    state.user = user;
-    state.errors.email = [];
-    state.errors.password = [];
-    state.errors.message = '';
-    state.isAuthenticated = true;
+    state.user = user
+    state.errors.email = []
+    state.errors.password = []
+    state.errors.message = ''
+    state.isAuthenticated = !state.isAuthenticated
   },
 
   resetStore: () => {
-    state.user = { name: '', email: '', created_at: '' };
-    state.errors.email = [];
-    state.errors.password = [];
-    state.errors.message = '';
-    state.isAuthenticated = false;
-  },
-};
+    state.user = { name: '', email: '', created_at: '' }
+    state.errors.email = []
+    state.errors.password = []
+    state.errors.message = ''
+    state.isAuthenticated = false
+  }
+}
 
 watch(
   () => state,
   () => {
-    localStorage.setItem(STATE_NAME, JSON.stringify(state));
+    localStorage.setItem(STATE_NAME, JSON.stringify(state))
   },
   {
-    deep: true,
+    deep: true
   }
-);
+)
 
 export default () => {
   if (localStorage.getItem(STATE_NAME) === null) {
-    localStorage.setItem(STATE_NAME, JSON.stringify(state));
+    localStorage.setItem(STATE_NAME, JSON.stringify(state))
   }
 
   return {
     state: readonly(state),
     ...actions,
-    ...getters,
-  };
-};
+    ...getters
+  }
+}
