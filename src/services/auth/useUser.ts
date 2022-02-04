@@ -9,7 +9,7 @@ async function getUser() {
   try {
     await Api.get('api/user/').then(({ data }) => (state.user = data))
   } catch (error: any) {
-    console.error(error.response.data)
+    // console.error(error.response.data.errors)
   }
 }
 
