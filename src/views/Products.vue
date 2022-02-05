@@ -1,7 +1,7 @@
 <template>
   <DefaultLayout>
     <h1 class="title-page">Produtos</h1>
-    <div v-if="loading" class="flex justify-center items-center h-screen w-full">
+    <div v-if="loading" class="flex justify-center items-center h-screen w-full animate-pulse">
       <span class="animate-spin">
         <svg
           xmlns="http://www.w3.org/2000/svg"
@@ -19,26 +19,32 @@
         </svg>
       </span>
     </div>
-    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 z-auto mt-4 px-2">
+    <div v-else class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 z-auto mt-4 px-2">
       <div
         v-for="product in products"
         :key="product.id"
-        class="border bg-slate-100 border-md shadow-md space-y-2"
+        class="bg-slate-100 rounded-md border border-transparent shadow-md space-y-2"
+        @click.prevent="show(product.slug)"
       >
         <div
           class="object-contain h-52 bg-gradient-to-br from-stone-500 to-stone-400 rounded-t text-center"
         >image</div>
-        <div class="p-4 flex flex-col relative">
+        <div class="relative flex flex-col">
           <button class="add-to-cart" @click="addItemToCart(product)">
             <icon-cart class="h-6 w-6" />
           </button>
-          <div class="text-lg font-semibold text-slate-600 truncate">{{ product.name }}</div>
-          <div
-            class="text-sm font-thin text-slate-600 mb-4 line-clamp-1 h-20"
-          >{{product.description}}</div>
-          <div
-            class="price"
-          >{{ new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}}</div>
+          <div class="grid grid-cols-1 gap-0 place-content-stretch">
+            <div
+              class="md:text-lg font-semibold text-slate-600 px-2 py-1 truncate border-b border-stone-200"
+            >{{ product.name }}</div>
+            <div class="text-sm text-right font-thin text-slate-600 mb-4 line-clamp-2 px-1">
+              <b>Categoria:</b>
+              {{product.category.name}}
+            </div>
+            <div
+              class="price"
+            >{{ new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' }).format(product.price)}}</div>
+          </div>
         </div>
       </div>
 
@@ -48,15 +54,17 @@
 </template>
 
 <script lang="ts">
-import {defineComponent} from 'vue'
+import {computed, defineComponent} from 'vue'
 //components
 import DefaultLayout from '../components/layouts/DefaultLayout.vue'
 import IconCart from '../components/icons/IconCart.vue';
 //Store
 import useCartState from '../store/useCartState'
-import useProductState from '../store/useProductState'
+// import useProductState from '../store/useProductState'
 //services
 import useProduct from '../services/products/useProduct';
+import router from '../router';
+import { useRouter } from 'vue-router';
 
 
 export default defineComponent({
@@ -64,19 +72,25 @@ export default defineComponent({
   components: {DefaultLayout, IconCart},
 
   setup(){
-    const {state} = useProductState()
+    // const {state} = useProductState()
     const {state: cartState, addItemToCart} = useCartState()
+    const router = useRouter()
 
-    const {getProducts, products, loading} = useProduct()
+    const {findBySlug, getProducts, state} = useProduct()
 
     getProducts();
 
+    const show = (slug:string) => {
+      router.push({name:'product', params: {slug}})
+    }
+
     return {
       // products: computed(()=>state.products),
-      products,
+      products: state.products,
       // loading: computed(()=>state.loading),
-      loading,
-      addItemToCart
+      loading: computed(()=>state.loading),
+      addItemToCart,
+      show
     }
   }
 })
@@ -84,14 +98,15 @@ export default defineComponent({
 
 <style scoped>
   .add-to-cart {
-    @apply absolute right-2 -inset-y-8 w-12 h-12 flex items-center justify-center z-0;
-    @apply border-stone-800  bg-stone-500 rounded-full text-white;
-    @apply hover:bg-gradient-to-r hover:from-orange-500 hover:to-orange-600 hover:-translate-y-1;
+    @apply absolute right-2 -inset-y-9 flex items-center justify-center z-0;
+    @apply h-10 w-10 md:w-12 md:h-12;
+    @apply border-stone-800  bg-stone-500/30 rounded-full text-white;
+    @apply hover:bg-gradient-to-r hover:from-orange-400 hover:to-orange-500 hover:-translate-y-1;
     @apply transition duration-300 ease-in-out;
   }
   .price {
-    @apply absolute inset-x-0 bottom-0 p-2 z-0;
+    @apply bottom-0 left-0 p-2 w-full rounded-b;
     @apply flex flex-row items-center justify-end;
-    @apply bg-orange-600 text-lg text-orange-50 font-bold;
+    @apply bg-orange-500 text-lg text-orange-50 font-bold;
   }
 </style>
