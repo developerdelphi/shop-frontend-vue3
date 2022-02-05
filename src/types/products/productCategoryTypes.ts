@@ -1,12 +1,4 @@
-export interface IProduct {
-  id: number
-  category_id: number
-  slug: string
-  name: string
-  description: string
-  price: number
-  status: string
-}
+import { IProduct } from './productTypes'
 
 export interface ICategory {
   id: number
