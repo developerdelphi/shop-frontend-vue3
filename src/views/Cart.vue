@@ -49,13 +49,16 @@
             <span>fulano@mail.com</span>
           </div>
         </div>
+        <div class="w-full block py-2 px-4">
+          <button class="btn-primary block w-full" @click.prevent="completedOrder()">Fechar pedido</button>
+        </div>
       </div>
     </div>
   </DefaultLayout>
 </template>
 
 <script lang="ts">
-import { defineComponent} from 'vue'
+import { computed, defineComponent} from 'vue'
 //components
 import DefaultLayout from '../components/layouts/DefaultLayout.vue';
 import IconMinus from '../components/icons/IconMinus.vue';
@@ -63,19 +66,36 @@ import IconPlus from '../components/icons/IconPlus.vue';
 import IconTrash from '../components/icons/IconTrash.vue';
 //store
 import useCartState from '../store/useCartState'
+import { saveOrder } from '../services/orders/useSaveOrder';
+import { useRoute, useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'CartPage',
   components: {DefaultLayout, IconPlus, IconMinus, IconTrash},
 
   setup() {
-    const {decItemCart, addItemToCart, getItems, getTotal,} = useCartState();
+    const route = useRouter()
+    const {decItemCart, addItemToCart, getItems, getTotal, countItensCart} = useCartState();
+
+    const completedOrder = async () => {
+      const data = {
+        total: getTotal.value
+      }
+
+      await saveOrder(data)
+
+      const itemsCart = countItensCart()
+      if(itemsCart <= 0) {
+        route.push({name: 'dashboard'})
+      }
+    }
 
     return {
       items: getItems(),
+      total: getTotal,
       decItemCart,
       addItemToCart,
-      total: getTotal
+      completedOrder
     }
   }
 });
