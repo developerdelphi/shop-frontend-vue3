@@ -1,6 +1,8 @@
-# Vue 3 + Typescript + Vite
+# SHOP  Vue 3 + Typescript + Vite + TailwindCSS
 
-This template should help get you started developing with Vue 3 and Typescript in Vite. The template uses Vue 3 `<script setup>` SFCs, check out the [script setup docs](https://v3.vuejs.org/api/sfc-script-setup.html#sfc-script-setup) to learn more.
+This project is Frontend to SHOP-BACKEND-LARAVEL project. Technologies useds in approach of study Vite, Vue 3 with Typescript, TailwindCSS.
+
+The project is for study, therefore not recommended for production without the necessary adaptations
 
 ## Recommended IDE Setup
 
