@@ -76,7 +76,7 @@ export default defineComponent({
     const {state: cartState, addItemToCart} = useCartState()
     const router = useRouter()
 
-    const {findBySlug, getProducts, state} = useProduct()
+    const {findBySlug, getProducts, products, state} = useProduct()
 
     getProducts();
 
@@ -86,11 +86,12 @@ export default defineComponent({
 
     return {
       // products: computed(()=>state.products),
-      products: state.products,
+      // products: computed(()=>state.products),
       // loading: computed(()=>state.loading),
       loading: computed(()=>state.loading),
       addItemToCart,
-      show
+      show,
+      products
     }
   }
 })

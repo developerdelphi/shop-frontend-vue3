@@ -69,15 +69,14 @@ function findById(id: number) {
 
 function findBySlug(slug: string): IProductCategory | undefined {
   return (state.product = state.products.find(prod => prod.slug === slug))
-  // console.log('PRODUTO ', state.product)
-  // console.log('coneudo do find', slug, state.products)
 }
 
 export default () => ({
   state: readonly(state),
+  products: computed(() => state.products),
+  product: computed(() => state.product),
   findById,
   findBySlug,
   getProducts,
   getProductBySlug
-  // ...toRefs(state),
 })
