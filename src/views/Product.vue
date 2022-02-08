@@ -68,7 +68,7 @@ export default defineComponent({
   setup(props) {
     const route = useRoute()
     const {addItemToCart} = useCartState()
-    const {state, getProductBySlug} = useProduct()
+    const {state, product, getProductBySlug} = useProduct()
 
     watch(
       () => route.params.slug,
@@ -78,7 +78,8 @@ export default defineComponent({
     console.log('resultado de product', state.product)
     const buscar = () => getProductBySlug(props.slug)
     return {
-      product: computed(() => state.product),
+      // product: <IProductCategory>state.product,
+      product,
       loading: computed(()=>state.loading),
       addItemToCart,
       buscar

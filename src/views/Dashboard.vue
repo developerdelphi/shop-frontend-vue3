@@ -24,6 +24,7 @@ import {defineComponent} from 'vue'
 import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
 import useUser from '@/services/auth/useUser';
 
+
 export default defineComponent({
   name: 'Dashboard',
   components: {DefaultLayout},
