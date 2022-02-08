@@ -1,25 +1,20 @@
 <template>
   <DefaultLayout>
     <h1 class="title-page">Produtos</h1>
-    <div v-if="loading" class="flex justify-center items-center h-screen w-full animate-pulse">
-      <span class="animate-spin">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-10 w-10 text-orange-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          />
-        </svg>
-      </span>
+    <div class="p-2">
+      <div class="inline-flex space-x-1">
+        <input
+          class="rounded-md text-sm font-semibold border border-transparent focus:ring-orange-500 placeholder:text-stone-500/30"
+          type="text"
+          placeholder="Pesquisar por..."
+        />
+        <button class="btn-search">
+          <icon-search class="h-6" />
+        </button>
+      </div>
     </div>
-    <div v-else class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-4 z-auto mt-4 px-2">
+
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 z-auto mt-4 px-2">
       <div
         v-for="product in products"
         :key="product.id"
@@ -37,7 +32,7 @@
             <div
               class="md:text-lg font-semibold text-slate-600 px-2 py-1 truncate border-b border-stone-200"
             >{{ product.name }}</div>
-            <div class="text-sm text-right font-thin text-slate-600 mb-4 line-clamp-2 px-1">
+            <div class="text-sm text-right font-thin text-slate-600 mb-4 truncate px-1">
               <b>Categoria:</b>
               {{product.category.name}}
             </div>
@@ -47,8 +42,28 @@
           </div>
         </div>
       </div>
+    </div>
 
-      <div v-if="loading" class="bg-stone-100 h-10 w-10"></div>
+    <div v-if="loading" class="flex justify-center items-center w-full py-4 animate-pulse">
+      <span class="animate-spin">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="h-10 w-10 text-orange-500"
+          fill="none"
+          viewBox="0 0 24 24"
+          stroke="currentColor"
+        >
+          <path
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            stroke-width="2"
+            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+          />
+        </svg>
+      </span>
+    </div>
+    <div v-if="nextPage" class="flex justify-center items-center py-8">
+      <button class="btn-primary" @click="paginate('next')">Mais produtos...</button>
     </div>
   </DefaultLayout>
 </template>
@@ -58,25 +73,24 @@ import {computed, defineComponent} from 'vue'
 //components
 import DefaultLayout from '../components/layouts/DefaultLayout.vue'
 import IconCart from '../components/icons/IconCart.vue';
+import IconSearch from '../components/icons/IconSearch.vue';
 //Store
 import useCartState from '../store/useCartState'
-// import useProductState from '../store/useProductState'
 //services
 import useProduct from '../services/products/useProduct';
-import router from '../router';
 import { useRouter } from 'vue-router';
 
 
 export default defineComponent({
   name: 'Products',
-  components: {DefaultLayout, IconCart},
+  components: {DefaultLayout, IconCart, IconSearch},
 
   setup(){
-    // const {state} = useProductState()
-    const {state: cartState, addItemToCart} = useCartState()
+
+    const { addItemToCart} = useCartState()
     const router = useRouter()
 
-    const {findBySlug, getProducts, products, state} = useProduct()
+    const {getProducts, paginate, products, state, nextPage} = useProduct()
 
     getProducts();
 
@@ -84,14 +98,25 @@ export default defineComponent({
       router.push({name:'product', params: {slug}})
     }
 
+    window.onscroll = () => {
+      let bottomOfWindow = (document.documentElement.scrollTop + window.innerHeight + 10) >= document.documentElement.offsetHeight;
+      // console.log('SCROLLTOP', document.documentElement.scrollTop +10);
+      // console.log('CLIENT HEIGHT', window.innerHeight);
+      // console.log('OFFSET', document.documentElement.offsetHeight);
+      // console.log('comparação', document.documentElement.scrollTop + window.innerHeight);
+      if(bottomOfWindow) {
+        // console.log('CHAMOU')
+        if(nextPage.value) paginate('next')
+      }
+    }
+
     return {
-      // products: computed(()=>state.products),
-      // products: computed(()=>state.products),
-      // loading: computed(()=>state.loading),
       loading: computed(()=>state.loading),
       addItemToCart,
       show,
-      products
+      paginate,
+      products,
+      nextPage
     }
   }
 })
@@ -109,5 +134,14 @@ export default defineComponent({
     @apply bottom-0 left-0 p-2 w-full rounded-b;
     @apply flex flex-row items-center justify-end;
     @apply bg-orange-500 text-lg text-orange-50 font-bold;
+  }
+
+  .btn-search {
+    @apply appearance-none cursor-pointer px-4 py-2 rounded-md tracking-tight;
+    @apply font-semibold;
+    @apply transition duration-300 ease-in-out;
+    @apply hover:scale-105 hover:bg-stone-400;
+    @apply focus:ring;
+    @apply bg-stone-500;
   }
 </style>
