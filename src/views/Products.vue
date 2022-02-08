@@ -46,20 +46,7 @@
 
     <div v-if="loading" class="flex justify-center items-center w-full py-4 animate-pulse">
       <span class="animate-spin">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="h-10 w-10 text-orange-500"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke="currentColor"
-        >
-          <path
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            stroke-width="2"
-            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
-          />
-        </svg>
+        <icon-loading />
       </span>
     </div>
     <div v-if="nextPage" class="flex justify-center items-center py-8">
@@ -74,6 +61,7 @@ import {computed, defineComponent} from 'vue'
 import DefaultLayout from '../components/layouts/DefaultLayout.vue'
 import IconCart from '../components/icons/IconCart.vue';
 import IconSearch from '../components/icons/IconSearch.vue';
+import IconLoading from '../components/icons/IconLoading.vue';
 //Store
 import useCartState from '../store/useCartState'
 //services
@@ -83,7 +71,7 @@ import { useRouter } from 'vue-router';
 
 export default defineComponent({
   name: 'Products',
-  components: {DefaultLayout, IconCart, IconSearch},
+  components: {DefaultLayout, IconCart, IconSearch, IconLoading},
 
   setup(){
 
