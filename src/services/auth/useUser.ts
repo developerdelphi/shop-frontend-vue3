@@ -1,13 +1,14 @@
 import { computed, reactive, toRefs } from 'vue'
 import Api from '@/services/api'
+import { IOrder } from '@/types/orders/orderTypes'
 
 const state = reactive({
   user: {},
-  orders: { data: [] }
+  orders: { data: <IOrder[]>[] }
 })
 
 const getters = {
-  getOrders: () => computed(() => state.orders.data)
+  getOrders: () => computed<IOrder[]>(() => state.orders.data)
 }
 
 const actions = {
