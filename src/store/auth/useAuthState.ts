@@ -1,9 +1,9 @@
 import { computed, reactive, readonly, watch } from 'vue'
-import { IStateAuth, IAuthData, userDataType, errorsDataType } from '@/types/auth/authTypes'
+import { IAuthState, IAuthData, userDataType, errorsDataType } from '@/types/auth/authTypes'
 
 const STATE_NAME = 'SHOP-USER'
 
-const defaultState: IStateAuth = {
+const defaultState: IAuthState = {
   user: {
     name: '',
     email: '',
@@ -27,7 +27,7 @@ const getDefaultState = () => {
   return defaultState
 }
 
-const state: IStateAuth = reactive(getDefaultState())
+const state: IAuthState = reactive(getDefaultState())
 
 const getters = {
   getErrors: () => computed(() => state.errors),
