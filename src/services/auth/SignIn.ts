@@ -1,38 +1,43 @@
-import Api from '../api';
-import useAuthState from '../../store/auth/useAuthState';
+import Api from '../api'
+import useAuthState from '../../store/auth/useAuthState'
+import { IAuthData } from '@/types/auth/authTypes'
 
 type SignInDataRequest = {
-  email: string;
-  password: string;
-};
+  email: string
+  password: string
+}
 
-const authState = useAuthState();
+const authState = useAuthState()
 
 async function SignInRequest(data: SignInDataRequest): Promise<any> {
   try {
-    await Api.post('api/signin', data).then((response) => {
-      const { name, email, created_at } = response.data.user;
-      authState.authenticate({ name, email, created_at });
-      return true;
-    });
+    await Api.post('api/signin', data).then(response => {
+      const { name, email, created_at, token } = response.data.user
+      const dataToAuthenicate: IAuthData = {
+        user: { name, email, created_at },
+        token
+      }
+      authState.authenticate(dataToAuthenicate)
+      return true
+    })
   } catch (error: any) {
     if (error.response.status === 422 || error.response.status === 401) {
-      let email: string[] = [];
-      let password: string[] = [];
-      let message: string = '';
+      let email: string[] = []
+      let password: string[] = []
+      let message: string = ''
 
       if (error.response.data.errors) {
-        email = error.response.data.errors.email;
-        password = error.response.data.errors.password;
+        email = error.response.data.errors.email
+        password = error.response.data.errors.password
       }
       if (error.response.data.message) {
-        message = error.response.data.message;
+        message = error.response.data.message
         // authState.setErrors({ email: [], password: [], message });
       }
-      authState.setErrors({ email, password, message });
+      authState.setErrors({ email, password, message })
     }
-    return false;
+    return false
   }
 }
 
-export default SignInRequest;
+export default SignInRequest
