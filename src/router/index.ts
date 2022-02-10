@@ -46,9 +46,12 @@ const router = createRouter({
 const { isAuthenticated } = useAuthState()
 
 router.beforeEach((to, from, next) => {
-  if (to.name === 'signin' && isAuthenticated) return next()
+  // console.log('rota para login', to.name === 'signin' && isAuthenticated)
+  if (to.name === 'signin' && isAuthenticated.value) return next()
 
-  const requiresAuth = to.meta.requiresAuth
+  const requiresAuth = to.meta?.requiresAuth || false
+  // console.log('ROTA AUTH', requiresAuth)
+  // console.log('USUÁRIO AUTHENTICATED', isAuthenticated.value)
   if (!!requiresAuth && !isAuthenticated.value) next({ name: 'signin' })
   else next()
 })
