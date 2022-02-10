@@ -10,7 +10,7 @@ type errorsDataType = {
   message?: string
 }
 
-interface IStateAuth {
+interface IAuthState {
   user: userDataType
   isAuthenticated: boolean
   errors: errorsDataType
@@ -22,4 +22,4 @@ interface IAuthData {
   token: string
 }
 
-export { userDataType, errorsDataType, IStateAuth, IAuthData }
+export { userDataType, errorsDataType, IAuthState, IAuthData }
