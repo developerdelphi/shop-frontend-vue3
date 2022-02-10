@@ -57,16 +57,16 @@
 
 <script lang="ts">
 import {computed, defineComponent} from 'vue'
-//components
-import DefaultLayout from '../components/layouts/DefaultLayout.vue'
-import IconCart from '../components/icons/IconCart.vue';
-import IconSearch from '../components/icons/IconSearch.vue';
-import IconLoading from '../components/icons/IconLoading.vue';
-//Store
-import useCartState from '../store/useCartState'
-//services
-import useProduct from '../services/products/useProduct';
 import { useRouter } from 'vue-router';
+//components
+import DefaultLayout from '@/components/layouts/DefaultLayout.vue'
+import IconCart from '@/components/icons/IconCart.vue';
+import IconSearch from '@/components/icons/IconSearch.vue';
+import IconLoading from '@/components/icons/IconLoading.vue';
+//Store
+import useCartState from '@/store/useCartState'
+//services
+import useProduct from '@/services/products/useProduct';
 
 
 export default defineComponent({
