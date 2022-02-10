@@ -16,7 +16,7 @@
 </template>
 
 <script lang="ts" setup>
-name: 'IconLoading'
+
 </script>
 
 <style>
