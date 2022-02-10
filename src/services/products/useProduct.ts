@@ -1,7 +1,8 @@
 import Api from '../api'
 import useProductState from '../../store/useProductState'
 import { computed, reactive, readonly, toRefs } from 'vue'
-import { IProduct, IProductCategory } from '../../types/products/productTypes'
+import { IProductCategory } from '../../types/products/productTypes'
+
 interface IPagination {
   path: string | null
   per_page: number | null
@@ -83,13 +84,11 @@ const actions = {
   },
 
   getProducts: async () => {
-    useProduct.setLoading()
     state.loading = true
     try {
       await Api.get(`api/products/search/?`).then(response => {
         setTimeout(() => {
-          useProduct.setProducts(response.data)
-          state.products = response.data.data
+          state.products.push(...response.data.data)
           state.loading = false
           state.paginate = {
             path: response.data.path,
