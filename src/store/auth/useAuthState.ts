@@ -1,26 +1,9 @@
 import { computed, reactive, readonly, watch } from 'vue'
-
-type userData = {
-  name: string
-  email: string
-  created_at: string
-}
-
-type errorsData = {
-  email?: Array<string>
-  password?: Array<string>
-  message?: string
-}
-
-interface State {
-  user: userData
-  isAuthenticated: boolean
-  errors: errorsData
-}
+import { IStateAuth, IAuthData, userDataType, errorsDataType } from '@/types/auth/authTypes'
 
 const STATE_NAME = 'SHOP-USER'
 
-const defaultState: State = {
+const defaultState: IStateAuth = {
   user: {
     name: '',
     email: '',
@@ -31,18 +14,20 @@ const defaultState: State = {
     email: [],
     password: [],
     message: ''
-  }
+  },
+  token: ''
 }
 
 const getDefaultState = () => {
-  if (localStorage.getItem(STATE_NAME) !== null) {
-    return JSON.parse(localStorage.getItem(STATE_NAME))
+  const getLocalStorage = localStorage.getItem(STATE_NAME)
+  if (getLocalStorage !== null) {
+    return JSON.parse(getLocalStorage)
   }
   localStorage.removeItem(STATE_NAME)
   return defaultState
 }
 
-const state = reactive(getDefaultState())
+const state: IStateAuth = reactive(getDefaultState())
 
 const getters = {
   getErrors: () => computed(() => state.errors),
@@ -50,11 +35,11 @@ const getters = {
 }
 
 const actions = {
-  setUser: (user: userData): void => {
+  setUser: (user: userDataType): void => {
     state.user = user
   },
 
-  setErrors: ({ email, password, message }: errorsData) => {
+  setErrors: ({ email, password, message }: errorsDataType) => {
     state.errors.email = email
     state.errors.password = password
     state.errors.message = message
@@ -62,12 +47,13 @@ const actions = {
 
   setAuthenticated: () => (state.isAuthenticated = !state.isAuthenticated),
 
-  authenticate: (user: userData) => {
+  authenticate: ({ user, token }: IAuthData) => {
     state.user = user
     state.errors.email = []
     state.errors.password = []
     state.errors.message = ''
     state.isAuthenticated = !state.isAuthenticated
+    state.token = token
   },
 
   resetStore: () => {
