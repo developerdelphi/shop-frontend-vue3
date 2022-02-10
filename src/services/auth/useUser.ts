@@ -27,7 +27,7 @@ const actions = {
         state.orders = response.data
       })
     } catch (error: any) {
-      console.error(error.respose.data)
+      console.error(error, error.response?.data || error.response?.message)
     }
   }
 }
