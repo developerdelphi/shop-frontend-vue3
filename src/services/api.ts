@@ -1,7 +1,9 @@
 import axios from 'axios'
+import router from '@/router/index'
 import useAuthState from '../store/auth/useAuthState'
 
 const useAuth = useAuthState()
+// const router = useRouter()
 
 const Api = axios.create({
   baseURL: 'http://localhost:8000/',
@@ -23,9 +25,12 @@ Api.interceptors.response.use(
     }
 
     if (status === 401) {
-      console.error('ERRO 401 CAPTURADO')
-      // useAuth.authenticate({ name: '', email: '', created_at: '' })
-      // router.push({ name: 'signin' })
+      // console.error('ERRO 401 CAPTURADO')
+      useAuth.resetStore()
+      router.replace({
+        path: '/signin'
+        // query: { redirect: router.currentRoute.fullPath }
+      })
     }
 
     return Promise.reject(err)
