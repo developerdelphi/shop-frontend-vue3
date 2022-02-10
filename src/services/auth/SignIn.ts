@@ -13,11 +13,11 @@ async function SignInRequest(data: SignInDataRequest): Promise<any> {
   try {
     await Api.post('api/signin', data).then(response => {
       const { name, email, created_at, token } = response.data.user
-      const dataToAuthenicate: IAuthData = {
+      const dataToAuthenticate: IAuthData = {
         user: { name, email, created_at },
         token
       }
-      authState.authenticate(dataToAuthenicate)
+      authState.authenticate(dataToAuthenticate)
       return true
     })
   } catch (error: any) {
